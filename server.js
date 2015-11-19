@@ -20,7 +20,29 @@ app.use(function(req, res, next){
 });
 
 app.get('/transactions', function(req,res){
-    
+   connection.query('SELECT * FROM transactions', function(err, rows){
+        if (!err){
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify(rows));
+            console.log('The solution is: ', rows);
+        }
+        else{
+            console.log('Error while performing query')
+        }
+    });  
+});
+
+app.post('/transactions', function(req,res){
+    connection.query("INSERT INTO transactions (sid, donation) VALUES" + "(15432, 100)", function(err){
+        if (err){
+            res.end("DB error");
+            console.log("DB insertion failed"+ err);
+        }
+        else{
+            res.end("Success");
+            console.log("DB insertion success");
+        }
+    });  
 });
 
 app.listen(port);
