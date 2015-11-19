@@ -12,15 +12,18 @@ var port= 5238;
 var express= require('express');
 
 var app= express();
+var bodyParser= require("body-parser");
 
 //prupose of this is to enable cross domain requests
 app.use(function(req, res, next){
    res.header("Access-Control-Allow-Origin", "*");
    next();
 });
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/transactions', function(req,res){
-   connection.query('SELECT * FROM transactions', function(err, rows){
+   connection.query
+   ('SELECT sid, SUM(donation) AS donation FROM transactions WHERE sid is not NULL AND donation is not NULL GROUP BY sid ORDER BY sid DESC', function(err, rows){
         if (!err){
             res.setHeader("Content-Type", "application/json");
             res.end(JSON.stringify(rows));
@@ -32,10 +35,14 @@ app.get('/transactions', function(req,res){
     });  
 });
 
-app.post('/transactions', function(req,res){
-    connection.query("INSERT INTO transactions (sid, donation) VALUES" + "(15432, 100)", function(err){
+app.post('/transactions/:sid/:donation', function(req,res){
+    var sid= req.params.sid;
+    var donation= req.params.donation;
+    console.log(sid+donation);
+    connection.query("INSERT INTO transactions (sid, donation) VALUES " + 
+                     "("+sid+", "+donation+")", function(err){
         if (err){
-            res.end("DB error");
+            res.end("DB error"+err);
             console.log("DB insertion failed"+ err);
         }
         else{

@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Student</title>
+         <!-- Compiled and minified CSS -->
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+           <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   
+    </head>
+    <body>
+        <div class="container">
+            <table>
+                <thead>
+                  <tr>
+                      <th data-field="id">Student ID</th>
+                      <th data-field="name">Donation</th>
+                  </tr>
+                </thead>
+
+                <tbody id="send-info">
+                    <th data-field="id"><input type="text" id="studentId"></th>
+                    <th data-field="name"><input type="text" id="donation"></th>  
+                </tbody>
+              </table>
+            <center>
+                <button class="btn waves-effect waves-light" type="submit" name="action" id="action">Submit
+    <i class="material-icons right">send</i>
+  </button>
+            </center>  
+        </div>   
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"> </script>
+            <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+        <script src="post.js"></script>
+    </body>
+</html>
