@@ -1,0 +1,1 @@
+MariaDB [fundraising_app]> SELECT sid, fname, lname, SUM(donation) AS donation, grade FROM transactions NATURAL JOIN(SELECT sid, fname, lname, grade FROM studentTable NATURAL JOIN sections) AS INFO WHERE grade=9 GROUP BY sid ORDER BY donation DESC;

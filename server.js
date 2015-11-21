@@ -21,18 +21,23 @@ app.use(function(req, res, next){
 });
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/transactions', function(req,res){
-   connection.query
-   ('SELECT sid, SUM(donation) AS donation FROM transactions WHERE sid is not NULL AND donation is not NULL GROUP BY sid ORDER BY sid DESC', function(err, rows){
-        if (!err){
-            res.setHeader("Content-Type", "application/json");
-            res.end(JSON.stringify(rows));
-            console.log('The solution is: ', rows);
-        }
-        else{
-            console.log('Error while performing query')
-        }
-    });  
+app.get('/transactions/:grade', function(req,res){
+   var grade= req.params.grade;    
+   var query= 'SELECT sid, fname, lname, SUM(donation) AS donation, grade FROM transactions NATURAL JOIN(SELECT sid, fname, lname, grade FROM studentTable NATURAL JOIN sections) AS INFO WHERE grade="'+grade+'" GROUP BY sid ORDER BY grade DESC';
+    
+   if (grade=="all")
+       query= 'SELECT sid, fname, lname, SUM(donation) AS donation, grade FROM transactions NATURAL JOIN(SELECT sid, fname, lname, grade FROM studentTable NATURAL JOIN sections) AS INFO GROUP BY sid ORDER BY grade DESC';
+       connection.query(query, function(err, rows){
+            if (!err){
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify(rows));
+                console.log('The solution is: ', rows);
+            }
+            else{
+                console.log('Error while performing query')
+            }
+        });  
+   
 });
 
 app.post('/transactions/:sid/:donation', function(req,res){
