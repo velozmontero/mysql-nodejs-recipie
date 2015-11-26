@@ -34,10 +34,55 @@ app.get('/transactions/:grade', function(req,res){
                 console.log('The solution is: ', rows);
             }
             else{
-                console.log('Error while performing query')
+                console.log('Error while performing query');
             }
         });  
    
+});
+
+app.get('/getgrade/:grade', function(req,res){
+    var grade= req.params.grade; 
+    var query= 'SELECT section_id, teacher_name FROM sections WHERE grade="'+grade+'" ';
+    connection.query(query, function(err, rows){
+        if (err){
+            console.log('Error while performing query '+ err);
+        }
+        else{
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify(rows));
+            console.log('The solution is: ', rows);
+        }
+    });  
+});
+
+app.get('/getsection/:sectionSelectedsection', function(req,res){
+    var section= req.params.sectionSelected; 
+    var query= 'SELECT sid, fname, lname, SUM(donation) AS donation, grade FROM transactions NATURAL JOIN(SELECT sid, fname, lname, grade FROM studentTable NATURAL JOIN sections) AS INFO WHERE section_id="'+section+'" GROUP BY sid ORDER BY grade DESC';
+    connection.query(query, function(err, rows){
+        if (err){
+            console.log('Error while performing query '+ err);
+        }
+        else{
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify(rows));
+            console.log('The solution is: ', rows);
+        }
+    });  
+});
+
+app.get('/getsection/:grade', function(req,res){
+    var grade= req.params.grade; 
+    var query= 'SELECT section_id, teacher_name FROM sections WHERE grade="'+grade+'" ';
+    connection.query(query, function(err, rows){
+        if (err){
+            console.log('Error while performing query '+ err);
+        }
+        else{
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify(rows));
+            console.log('The solution is: ', rows);
+        }
+    });  
 });
 
 app.post('/transactions/:sid/:donation', function(req,res){
