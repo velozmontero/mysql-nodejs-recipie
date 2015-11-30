@@ -55,7 +55,7 @@ app.get('/getgrade/:grade', function(req,res){
     });  
 });
 
-app.get('/getsection/:sectionSelectedsection', function(req,res){
+app.get('/getsection/:sectionSelected', function(req,res){
     var section= req.params.sectionSelected; 
     var query= 'SELECT sid, fname, lname, SUM(donation) AS donation, grade FROM transactions NATURAL JOIN(SELECT sid, fname, lname, grade FROM studentTable NATURAL JOIN sections) AS INFO WHERE section_id="'+section+'" GROUP BY sid ORDER BY grade DESC';
     connection.query(query, function(err, rows){
