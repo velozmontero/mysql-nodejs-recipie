@@ -37,9 +37,10 @@ $(document).ready(function(){
     
     function getInfoBySection(){
         var sectionSelected= $('#sections').val();
+        $('#info').html("");
         $.ajax({
 
-            url: "http://localhost:5238/getsection/"+sectionSelected,
+            url: "http://localhost:5238/getSectionSelected/"+sectionSelected,
             
             success: function(res){
                 for (var x in res){
